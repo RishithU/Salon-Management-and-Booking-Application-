@@ -252,7 +252,7 @@ INSERT INTO Staff_Availability (staff_id, available_date, available_from, availa
 select * from Staff_Availability;
 
 
--- creating some bookings and assginging staff
+-- creating some bookings and assgining staff
 -- Bookings on 2025-06-21
 INSERT INTO Bookings (customer_id, shop_service_id, shop_id, service_date, start_time, end_time, status, advance_paid, remaining_paid) VALUES
 (4, 1, 1, '2025-06-21', '09:00:00', '09:45:00', 'completed', 50.00, 50.00),
@@ -340,7 +340,7 @@ SET @service_date = '2025-06-21';
 SET @start_time = '14:00:00';
 SET @end_time = '17:00:00';
 
---  matching shop_service_id (price & duration)
+--  2. matching shop_service_id (price & duration)
 SELECT @shop_service_id := ss.shop_service_id,
        @price := ss.price
 FROM Shop_Services ss
@@ -429,12 +429,12 @@ select * from staff_salaries;
 
 
 
--- query to add ffeedback for the above booking 
+-- query to add feedback for the above booking 
 INSERT INTO feedbacks (booking_id,customer_id,staff_rating,shop_rating) VALUES
 (5,7,4.5,4);
 
 select * from feedbacks;
--- query to show booking details(incl feedabck) for the day of a prticular shop
+-- query to show booking details(incl feedback) for the day of a particular shop
 SELECT 
     b.booking_id,
     u_cust.full_name AS customer_name,
@@ -456,9 +456,9 @@ LEFT JOIN Feedbacks f ON b.booking_id = f.booking_id
 WHERE b.shop_id = 2 AND b.service_date = '2025-6-21';
 
 
--- add more days booking , assignment , availabilty data 
+-- adding more days booking , assignment , availabilty data 
 
--- query to salary deatils of a particulr stafff member in a particualr shop ina particular date range
+-- query to salary details of a particular staff member in a particular shop in a particular date range
 SELECT 
     ss.salary_id,
     u.full_name AS staff_name,
