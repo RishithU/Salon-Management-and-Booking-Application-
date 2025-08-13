@@ -495,46 +495,7 @@ GROUP BY s.shop_id, s.shop_name;
 
 
 
--- query to show earning of owner of particular shop during a particular date range
-SELECT 
-    u.full_name AS owner_name,
-    u.user_id AS owner_id,
-    s.shop_name,
-    
-    COALESCE(oi.total_owner_income, 0) AS income_from_others,
-    COALESCE(ss.total_self_salary, 0) AS income_from_self_services,
-    
-    COALESCE(oi.total_owner_income, 0) + COALESCE(ss.total_self_salary, 0) AS total_income
 
-FROM Users u
-JOIN Shops s ON s.owner_id = u.user_id
-
-LEFT JOIN (
-    SELECT 
-        oi.owner_id,
-        b.shop_id,
-        SUM(oi.amount) AS total_owner_income
-    FROM Owner_Incomes oi
-    JOIN Bookings b ON oi.booking_id = b.booking_id
-    WHERE b.service_date BETWEEN '2025-06-01' AND '2025-06-30'
-    GROUP BY oi.owner_id, b.shop_id
-) oi ON u.user_id = oi.owner_id AND s.shop_id = oi.shop_id
-
-LEFT JOIN (
-    SELECT 
-        st.user_id,
-        b.shop_id,
-        SUM(ss.amount) AS total_self_salary
-    FROM Staff_Salaries ss
-    JOIN Staff st ON ss.staff_id = st.staff_id
-    JOIN Bookings b ON ss.booking_id = b.booking_id
-    WHERE ss.reason = 'completed'
-      AND b.service_date BETWEEN '2025-06-01' AND '2025-06-30'
-    GROUP BY st.user_id, b.shop_id
-) ss ON u.user_id = ss.user_id AND s.shop_id = ss.shop_id
-
-WHERE u.role = 'owner'
-  AND s.shop_id = 2;  
 
 
 
