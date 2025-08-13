@@ -384,20 +384,7 @@ SET @booking_id = LAST_INSERT_ID();
 INSERT INTO Booking_Assignments (booking_id, staff_id)
 VALUES (@booking_id, @staff_id);
 
--- Optional: Check result
-SELECT
-    b.booking_id, u.full_name AS customer_name, s.name AS service,
-    sh.shop_name, b.start_time, b.end_time, stf.skill AS assigned_skill,
-    su.full_name AS staff_assigned
-FROM Bookings b
-JOIN Shop_Services ss ON b.shop_service_id = ss.shop_service_id
-JOIN Services s ON ss.service_id = s.service_id
-JOIN Shops sh ON b.shop_id = sh.shop_id
-JOIN Users u ON b.customer_id = u.user_id
-JOIN Booking_Assignments ba ON b.booking_id = ba.booking_id
-JOIN Staff stf ON ba.staff_id = stf.staff_id
-JOIN Users su ON stf.user_id = su.user_id
-WHERE b.booking_id = @booking_id;
+
 
 
 select * from bookings;
